@@ -21,6 +21,8 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
+
+
 public class SearchFiles {
 
 	
@@ -36,7 +38,7 @@ public class SearchFiles {
 		    String queryString = null;
 		    int hitsPerPage = 10;
 
-		    
+		
 	  public SearchFiles() throws IOException, ParseException 
 	  {
 		  IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
