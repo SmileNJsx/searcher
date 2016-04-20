@@ -4,4 +4,16 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  
+  <display-name>Application</display-name>
+  
+  <servlet>
+  	<servlet-name>Searcher</servlet-name>
+  	<servlet-class>search.web.JsonServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>Searcher</servlet-name>
+  	<url-pattern>/result</url-pattern>
+  </servlet-mapping>
 </web-app>

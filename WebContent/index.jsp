@@ -49,8 +49,8 @@
 <body>
 <div class="logo"><img src="images/logo.png"></div>
 	<div class="search">
-		<form action="/result" method="post" name="s_form">
-			<input type="text" placeholder="请输入你想搜索的内容" class="text">
+		<form action="/Searcher/result" method="post" >
+			<input type="text"  name="s_form" placeholder="请输入你想搜索的内容" class="text">
 			<input type="submit" value="搜索一下" class="submit">
 		</form>
 	</div>
