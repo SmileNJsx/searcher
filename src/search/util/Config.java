@@ -20,8 +20,6 @@ public class Config {
 	public static String PASS_WORD;
 	public static String DRIVER_NAME;
 	
-	public static long ID;
-	
 	public static Config getInstance()
 	{
 		if(instance == null)
@@ -36,7 +34,6 @@ public class Config {
 	{
 		this.initProperties();
 		this.initDbUser();
-		this.initID();
 	}
 
 	private String getConfig(String key)
@@ -110,16 +107,6 @@ public class Config {
 			errExit(key);
 		}
 		DRIVER_NAME = value;
-	}
-	
-	private void initID()
-	{
-		String key , value;
-		
-		key = "ID";
-		value = getConfig(key);
-		
-		ID = Long.parseLong(value);
 	}
 	
 }

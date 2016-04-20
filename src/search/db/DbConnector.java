@@ -9,10 +9,10 @@ import search.util.Config;
 
 public class DbConnector
 {
-    private static String URL;
-    private static String USER_NAME;
-    private static String PASS_WORD;
-    private static String DRIVER_NAME;
+    private static String URL="jdbc:mysql://139.129.5.0/url";
+    private static String USER_NAME="root";
+    private static String PASS_WORD="Sx930622";
+    private static String DRIVER_NAME="com.mysql.jdbc.Driver";
     
     Config config = Config.getInstance();
     
@@ -21,10 +21,10 @@ public class DbConnector
     
     public static Connection getconnection()
     {	
-    	URL = Config.URL;
-    	USER_NAME = Config.USER_NAME;
-    	PASS_WORD = Config.PASS_WORD;
-    	DRIVER_NAME = Config.DRIVER_NAME;
+    	//URL = Config.URL;
+    	//USER_NAME = Config.USER_NAME;
+    	//PASS_WORD = Config.PASS_WORD;
+    	//DRIVER_NAME = Config.DRIVER_NAME;
     	
         Connection conn = null;
         

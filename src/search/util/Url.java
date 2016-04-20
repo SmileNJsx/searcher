@@ -2,7 +2,7 @@ package search.util;
 
 public class Url
 {
-    public static long id=Config.ID;
+    public long ID;
     
     public String title;
     
@@ -14,7 +14,7 @@ public class Url
     
     public long getId()
     {
-        return id;
+        return ID;
     }
     
     public String getUrl()

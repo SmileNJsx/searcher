@@ -14,17 +14,18 @@ public class SearchDb {
 	
 	public static String search;
 	
-	public static ArrayList<String> title;
-	public static ArrayList<String> url;
+	public static ArrayList<String> title = new ArrayList<String>();
+	public static ArrayList<String> url = new ArrayList<String>();
 	
 	public static void search(String search) throws SQLException
 	{
 		
 		SearchDb.search = search;
 		
-		String sql_1 = "select title from t_url where title like %"+search+"%";
-		String sql_2 = "select url from t_url where title like %"+search+"%";
+		String sql_1 = "select title from t_url where title like '%"+search+"%' limit 10";
+		String sql_2 = "select url from t_url where title like '%"+search+"%' limit 10";
     	
+		System.out.println(sql_1);
         Statement statement = conn.createStatement();
         
         ResultSet resultSet_1 = statement.executeQuery(sql_1);
@@ -42,7 +43,7 @@ public class SearchDb {
         {
 		    String tranfer = resultSet_2.getString("url");
             
-		    title.add(tranfer);
+		    url.add(tranfer);
         }
 	}
 }
