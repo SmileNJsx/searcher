@@ -14,10 +14,10 @@ public class SearchDb {
 	
 	public static String search;
 	
-	public static ArrayList<String> title = new ArrayList<String>();
-	public static ArrayList<String> url = new ArrayList<String>();
+	public ArrayList<String> title = new ArrayList<String>();
+	public ArrayList<String> url = new ArrayList<String>();
 	
-	public static void search(String search) throws SQLException
+	public void search(String search) throws SQLException
 	{
 		
 		SearchDb.search = search;

@@ -11,15 +11,19 @@ import search.search.SearchDb;
 
 @SuppressWarnings("serial")
 public class JsonServlet extends HttpServlet{
-	public static String search;
-	
-	public static int i =0;
-	
-	public static String result="{"
-			+ "\"list\":[";
+
 	@Override
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws IOException
 	{
+		String search;
+		
+		int i =0;
+		
+		String result="{"
+				+ "\"list\":[";
+		
+		SearchDb searchDb =new SearchDb();
+		
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Content-Type", "text/html;charset=UTF-8");
 		
@@ -27,24 +31,24 @@ public class JsonServlet extends HttpServlet{
 		System.out.println(search);
 		
 		try {
-			SearchDb.search(search);
+			searchDb.search(search);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		for(;i<SearchDb.title.size()-1;i++)
+		for(;i<searchDb.title.size()-1;i++)
 		{
 			result += "{"
-					+ "\"title\":"+"\""+SearchDb.title.get(i)+"\""+","
-					+ "\"url\":"+"\""+SearchDb.url.get(i)+"\""
+					+ "\"title\":"+"\""+searchDb.title.get(i)+"\""+","
+					+ "\"url\":"+"\""+searchDb.url.get(i)+"\""
 					+ "}"+","
 					+ "\n";
 		}
 		
 		result += "{"
-				+ "\"title\":"+"\""+SearchDb.title.get(i)+"\""+","
-				+ "\"url\":"+"\""+SearchDb.url.get(i)+"\""
+				+ "\"title\":"+"\""+searchDb.title.get(i)+"\""+","
+				+ "\"url\":"+"\""+searchDb.url.get(i)+"\""
 				+ "}"
 				+ "\n";
 		
