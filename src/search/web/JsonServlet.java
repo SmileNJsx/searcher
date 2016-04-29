@@ -17,10 +17,10 @@ public class JsonServlet extends HttpServlet{
 	{
 		String search;
 		
-		int i =0;
+		//int i =0;
 		
-		String result="{"
-				+ "\"list\":[";
+		//String result="{"
+		//		+ "\"list\":[";
 		
 		SearchDb searchDb =new SearchDb();
 		
@@ -37,7 +37,8 @@ public class JsonServlet extends HttpServlet{
 			e.printStackTrace();
 		}
 		
-		for(;i<searchDb.title.size()-1;i++)
+		
+		/*for(;i<searchDb.title.size()-1;i++)
 		{
 			result += "{"
 					+ "\"title\":"+"\""+searchDb.title.get(i)+"\""+","
@@ -54,6 +55,6 @@ public class JsonServlet extends HttpServlet{
 		
 		result = result+"]}";
 		
-		response.getWriter().println(result);
+		response.getWriter().println(result);*/
 	}
 }

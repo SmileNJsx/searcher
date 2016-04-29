@@ -49,7 +49,7 @@
 <body>
 <div class="logo"><img src="images/logo.png"></div>
 	<div class="search">
-		<form action="/Searcher/web/result" method="post" >
+		<form action="/Searcher/result.jsp" method="post" >
 			<input type="text"  name="s_form" placeholder="请输入你想搜索的内容" class="text">
 			<input type="submit" value="搜索一下" class="submit">
 		</form>

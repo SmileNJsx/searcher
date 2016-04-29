@@ -13,11 +13,12 @@ public class SearchDb {
 	private static Connection conn = DbConnector.getconnection();
 	
 	public static String search;
+	public  String result;
 	
 	public ArrayList<String> title = new ArrayList<String>();
 	public ArrayList<String> url = new ArrayList<String>();
 	
-	public void search(String search) throws SQLException
+	public String search(String search) throws SQLException
 	{
 		
 		SearchDb.search = search;
@@ -45,5 +46,16 @@ public class SearchDb {
             
 		    url.add(tranfer);
         }
+        
+        for(int i=0;i<title.size();i++)
+        {
+        	result +=""
+        			+ "";
+        }
+        
+        return result;
 	}
 }
+
+
+
