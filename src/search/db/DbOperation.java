@@ -30,7 +30,7 @@ public class DbOperation
     	
     }
     
-    public static String select(String sql) throws SQLException
+    public static String select(String sql,String param) throws SQLException
     {
     	String url=null;
     	
@@ -40,7 +40,7 @@ public class DbOperation
         
         while(resultSet.next())
         {
-		    url = resultSet.getString("url");
+		    url = resultSet.getString(param);
             
         }
         return url;
