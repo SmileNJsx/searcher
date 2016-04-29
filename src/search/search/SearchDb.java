@@ -13,13 +13,17 @@ public class SearchDb {
 	private static Connection conn = DbConnector.getconnection();
 	
 	public static String search;
-	public  String result;
+	public String result;
 	
-	public ArrayList<String> title = new ArrayList<String>();
-	public ArrayList<String> url = new ArrayList<String>();
+	public ArrayList<String> Title = new ArrayList<String>();
+	public ArrayList<String> Url = new ArrayList<String>();
 	
 	public String search(String search) throws SQLException
 	{
+		this.result = null;
+		
+		ArrayList<String> title = new ArrayList<String>();
+		ArrayList<String> url = new ArrayList<String>();
 		
 		SearchDb.search = search;
 		
@@ -47,12 +51,21 @@ public class SearchDb {
 		    url.add(tranfer);
         }
         
+        this.Title=title;
+        this.Url=url;
+        
+        
         for(int i=0;i<title.size();i++)
         {
-        	result +=""
-        			+ "";
+        	result +="<div class=\"container\">"
+        			+ "<div class=\"section\">"
+        			+ "<a href="+url.get(i)+"><div class=\"title\">"+title.get(i)+"</div></a>"
+        			+ "<a href="+url.get(i)+"class=\"a_links\"><div class=\"links\">"+url.get(i)+"</div></a>"
+        			+ "</div>"
+        			+ "</div>";
         }
         
+        System.out.println(result);
         return result;
 	}
 }

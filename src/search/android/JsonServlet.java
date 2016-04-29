@@ -38,18 +38,18 @@ public class JsonServlet extends HttpServlet{
 			e.printStackTrace();
 		}
 		
-		for(;i<searchDb.title.size()-1;i++)
+		for(;i<searchDb.Title.size()-1;i++)
 		{
 			result += "{"
-					+ "\"title\":"+"\""+searchDb.title.get(i)+"\""+","
-					+ "\"url\":"+"\""+searchDb.url.get(i)+"\""
+					+ "\"title\":"+"\""+searchDb.Title.get(i)+"\""+","
+					+ "\"url\":"+"\""+searchDb.Url.get(i)+"\""
 					+ "}"+","
 					+ "\n";
 		}
 		
 		result += "{"
-				+ "\"title\":"+"\""+searchDb.title.get(i)+"\""+","
-				+ "\"url\":"+"\""+searchDb.url.get(i)+"\""
+				+ "\"title\":"+"\""+searchDb.Title.get(i)+"\""+","
+				+ "\"url\":"+"\""+searchDb.Url.get(i)+"\""
 				+ "}"
 				+ "\n";
 		
