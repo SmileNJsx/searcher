@@ -1,10 +1,6 @@
 package search.search;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 
@@ -21,66 +17,72 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
+import search.util.Log;
+
 
 
 public class SearchFiles {
-
 	
-	String usage =
-		      "Usage:\tjava org.apache.lucene.demo.SearchFiles [-index dir] [-field f] [-repeat n] [-queries file] [-query string] [-raw] [-paging hitsPerPage]\n\nSee http://lucene.apache.org/core/4_1_0/demo/ for details.";
-		    
-
-		    String index = "D:\\indextest";
-		    String field = "contents";
-		    String queries = null;
-		    int repeat = 0;
-		    boolean raw = false;
-		    String queryString = null;
-		    int hitsPerPage = 10;
-
+	String index = "D:\\indextest";
+	String field = "contents";
+	String queries = null;
+	int repeat = 0;
+	boolean raw = false;
+	String queryString = null;
+	int hitsPerPage = 10;	
+	
+	public SearchFiles() throws IOException, ParseException 
+	{
 		
-	  public SearchFiles() throws IOException, ParseException 
-	  {
-		  IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
-		    IndexSearcher searcher = new IndexSearcher(reader);
-		    Analyzer analyzer = new StandardAnalyzer();
+		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
+		IndexSearcher searcher = new IndexSearcher(reader);
+		Analyzer analyzer = new StandardAnalyzer();
 
-		    BufferedReader in = null;
-		    if (queries != null) {
-		      in = Files.newBufferedReader(Paths.get(queries), StandardCharsets.UTF_8);
+		/*BufferedReader in = null;
+		  if (queries != null) {
+			  in = Files.newBufferedReader(Paths.get(queries), StandardCharsets.UTF_8);
 		    } else {
 		      in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+		    }*/
+		QueryParser parser = new QueryParser(field, analyzer);
+		
+		while (true) 
+		{
+			if (queries == null && queryString == null) 
+			{
+				Log.Error("queries && queryString can not be empty!");
 		    }
-		    QueryParser parser = new QueryParser(field, analyzer);
-		    while (true) {
-		      if (queries == null && queryString == null) {                        // prompt the user
-		        System.out.println("Enter query: ");
-		      }
 
-		      String line = queryString != null ? queryString : in.readLine();
+		      /*String line = queryString != null ? queryString : in.readLine();
 
 		      if (line == null || line.length() == -1) {
 		        break;
 		      }
 
+		      
 		      line = line.trim();
 		      if (line.length() == 0) {
 		        break;
-		      }
+		      }*/
+			queryString = queryString.trim();
 		      
-		      Query query = parser.parse(line);
-		      System.out.println("Searching for: " + query.toString(field));
+		    Query query = parser.parse(queryString);
+		      
+		    System.out.println("Searching for: " + query.toString(field));
 		            
-		      if (repeat > 0) {                           // repeat & time as benchmark
-		        Date start = new Date();
-		        for (int i = 0; i < repeat; i++) {
+		    if (repeat > 0) {                           // repeat & time as benchmark
+		    	Date start = new Date();
+		        
+		    	for (int i = 0; i < repeat; i++) {
 		          searcher.search(query, 100);
 		        }
-		        Date end = new Date();
-		        System.out.println("Time: "+(end.getTime()-start.getTime())+"ms");
+		        
+		    	Date end = new Date();
+		        
+		    	System.out.println("Time: "+(end.getTime()-start.getTime())+"ms");
 		      }
 
-		      doPagingSearch(in, searcher, query, hitsPerPage, raw, queries == null && queryString == null);
+		      doPagingSearch(queryString, searcher, query, hitsPerPage, raw, queries == null && queryString == null);
 
 		      if (queryString != null) {
 		        break;
@@ -89,24 +91,9 @@ public class SearchFiles {
 		    reader.close();
 
 	  }
-
-	  /** Simple command-line based search demo. */
-	    	    
-	    
-	   	  
-
-	  /**
-	   * This demonstrates a typical paging search scenario, where the search engine presents 
-	   * pages of size n to the user. The user can then go to the next page if interested in
-	   * the next hits.
-	   * 
-	   * When the query is executed for the first time, then only enough results are collected
-	   * to fill 5 result pages. If the user wants to page beyond this limit, then the query
-	   * is executed another time and all hits are collected.
-	   * 
-	   */
-	  public static void doPagingSearch(BufferedReader in, IndexSearcher searcher, Query query, 
-	                                     int hitsPerPage, boolean raw, boolean interactive) throws IOException {
+	
+	  public static void doPagingSearch(String queryString, IndexSearcher searcher, Query query, int hitsPerPage, boolean raw, boolean interactive) throws IOException 
+	  {
 	 
 	    // Collect enough docs to show 5 pages
 	    TopDocs results = searcher.search(query, 5 * hitsPerPage);
@@ -122,7 +109,7 @@ public class SearchFiles {
 	      if (end > hits.length) {
 	        System.out.println("Only results 1 - " + hits.length +" of " + numTotalHits + " total matching documents collected.");
 	        System.out.println("Collect more (y/n) ?");
-	        String line = in.readLine();
+	        String line = queryString;
 	        if (line.length() == 0 || line.charAt(0) == 'n') {
 	          break;
 	        }
@@ -156,7 +143,7 @@ public class SearchFiles {
 	        break;
 	      }
 
-	      if (numTotalHits >= end) {
+	      /*if (numTotalHits >= end) {
 	        boolean quit = false;
 	        while (true) {
 	          System.out.print("Press ");
@@ -193,7 +180,7 @@ public class SearchFiles {
 	        }
 	        if (quit) break;
 	        end = Math.min(numTotalHits, start + hitsPerPage);
-	      }
+	      }*/
 	    }
 	  }
 	}
