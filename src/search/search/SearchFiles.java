@@ -17,44 +17,59 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
-
-import search.db.DbConnector;
 import search.db.DbOperation;
-import search.util.Log;
 
 public class SearchFiles {
 	
-	public String index = "D:\\indextest";
-	public String field = "contents";
-	public String queries = null;
-	public int repeat = 0;
-	public boolean raw = false;
-	public String queryString = null;
-	public int hitsPerPage = 10;	
+	String index = "D:\\indextest";
+	String field = "contents";
+	String queries = null;
+	int repeat = 0;
+	boolean raw = false;
+	String queryString ;
+	int hitsPerPage = 10;	
 	
 	public static char CharID;
 	public static int IntID;
 	
-	public static String result;
+	public  String result="";
 	
-	public String search(String search) throws IOException, ParseException, SQLException
+	public String search(String search) throws IOException, ParseException, SQLException 
 	{
-		
-		this.queryString = search;
 		
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
 		IndexSearcher searcher = new IndexSearcher(reader);
 		Analyzer analyzer = new StandardAnalyzer();
+		
+		this.queryString = search;
 
+		/*BufferedReader in = null;
+		  if (queries != null) {
+			  in = Files.newBufferedReader(Paths.get(queries), StandardCharsets.UTF_8);
+		    } else {
+		      in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+		    }*/
 		QueryParser parser = new QueryParser(field, analyzer);
 		
 		while (true) 
 		{
 			if (queries == null && queryString == null) 
 			{
-				Log.Error("queries && queryString can not be empty!");
+				System.out.println("queries && queryString can not be empty!");
+				//Log.Error("queries && queryString can not be empty!");
 		    }
 
+		      /*String line = queryString != null ? queryString : in.readLine();
+
+		      if (line == null || line.length() == -1) {
+		        break;
+		      }
+
+		      
+		      line = line.trim();
+		      if (line.length() == 0) {
+		        break;
+		      }*/
 			queryString = queryString.trim();
 		      
 		    Query query = parser.parse(queryString);
@@ -80,16 +95,13 @@ public class SearchFiles {
 		      }
 		    }
 		    reader.close();
-		    
-		    return "";
 
+		    return result;
 	  }
 	
 	  @SuppressWarnings("unused")
-	public static void doPagingSearch(String queryString, IndexSearcher searcher, Query query, int hitsPerPage, boolean raw, boolean interactive) throws IOException, SQLException 
+	public void doPagingSearch(String queryString, IndexSearcher searcher, Query query, int hitsPerPage, boolean raw, boolean interactive) throws IOException, SQLException 
 	  {
-	 
-		  DbConnector.getconnection();
 	    // Collect enough docs to show 5 pages
 	    TopDocs results = searcher.search(query, 5 * hitsPerPage);
 	    ScoreDoc[] hits = results.scoreDocs;
@@ -121,10 +133,9 @@ public class SearchFiles {
 	        }
 
 	        Document doc = searcher.doc(hits[i].doc);
-	        
 	        String path = doc.get("path");
 	        
-            path = path.trim();
+	        path = path.trim();
 	        
 	        for(int j=0;j<path.length();j++)
 	        {
@@ -138,28 +149,27 @@ public class SearchFiles {
 	        
 	        IntID = Integer.parseInt(StringID);
 	        
-	        String sql = "select url from t_url where id="+IntID;
+	        String sql_1 = "select title from t_url where id="+IntID;
+	        String sql_2 = "select url from t_url where id="+IntID;
 	        
-	       String sql_url = DbOperation.select(sql,"url");
-	       
-	       String sql_title = DbOperation.select(sql, "title");
+	        String Title = DbOperation.select(sql_1, "title");
+	        String Url = DbOperation.select(sql_2, "url");
 	        
-	       result +="<div class=\"container\">"
-       			+ "<div class=\"section\">"
-       			+ "<a href="+sql_url+"><div class=\"title\">"+sql_title+"</div></a>"
-       			+ "<a href="+sql_url+"class=\"a_links\"><div class=\"links\">"+sql_url+"</div></a>"
-       			+ "</div>"
-       			+ "</div>";
+	        result +="<div class=\"container\">"
+        			+ "<div class=\"section\">"
+        			+ "<a href="+Url+"><div class=\"title\">"+Title+"</div></a>"
+        			+ "<a href="+Url+"class=\"a_links\"><div class=\"links\">"+Url+"</div></a>"
+        			+ "</div>"
+        			+ "</div>";
+	System.out.println(result);
+	        
 	        if (path != null) {
 	          System.out.println((i+1) + ". " + path);
-	          
 	          String title = doc.get("title");
-	          
-	        if (title != null) {
+	          if (title != null) {
 	            System.out.println("   Title: " + doc.get("title"));
 	          }
-	        } 
-	        else {
+	        } else {
 	          System.out.println((i+1) + ". " + "No path for this document");
 	        }
 	                  
@@ -168,6 +178,46 @@ public class SearchFiles {
 	      if (!interactive || end == 0) {
 	        break;
 	      }
+
+	      /*if (numTotalHits >= end) {
+	        boolean quit = false;
+	        while (true) {
+	          System.out.print("Press ");
+	          if (start - hitsPerPage >= 0) {
+	            System.out.print("(p)revious page, ");  
+	          }
+	          if (start + hitsPerPage < numTotalHits) {
+	            System.out.print("(n)ext page, ");
+	          }
+	          System.out.println("(q)uit or enter number to jump to a page.");
+	          
+	          String line = in.readLine();
+	          if (line.length() == 0 || line.charAt(0)=='q') {
+	            quit = true;
+	            break;
+	          }
+	          if (line.charAt(0) == 'p') {
+	            start = Math.max(0, start - hitsPerPage);
+	            break;
+	          } else if (line.charAt(0) == 'n') {
+	            if (start + hitsPerPage < numTotalHits) {
+	              start+=hitsPerPage;
+	            }
+	            break;
+	          } else {
+	            int page = Integer.parseInt(line);
+	            if ((page - 1) * hitsPerPage < numTotalHits) {
+	              start = (page - 1) * hitsPerPage;
+	              break;
+	            } else {
+	              System.out.println("No such page");
+	            }
+	          }
+	        }
+	        if (quit) break;
+	        end = Math.min(numTotalHits, start + hitsPerPage);
+	      }*/
 	    }
 	  }
 	}
+

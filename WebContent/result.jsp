@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="search.search.SearchDb" %>
+<%@ page import="search.search.SearchFiles" %>
 
 <%!
 	public String result;
 	SearchDb searchDb = new SearchDb();
+	SearchFiles searchFiles = new SearchFiles();
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -121,9 +123,15 @@
 </div>
 
 <%
+    
 	String search =  new String(request.getParameter("s_form").getBytes("iso-8859-1"), "utf-8"); 
-	String result = searchDb.search(search);
 	
+	
+	
+	result = searchDb.search(search)+searchFiles.search(search);
+	
+	
+
 	out.println(result);
 %>
 
